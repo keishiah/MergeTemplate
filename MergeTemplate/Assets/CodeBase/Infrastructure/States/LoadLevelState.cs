@@ -1,6 +1,5 @@
 ﻿using CodeBase.CompositionRoot;
 using CodeBase.Infrastructure.Factories;
-using CodeBase.Logic.Camera;
 using CodeBase.Services.PlayerProgressService;
 using CodeBase.Services.SceneContextProvider;
 using CodeBase.UI.Factories;
@@ -68,7 +67,6 @@ namespace CodeBase.Infrastructure.States
 
         private async UniTask CreateUi()
         {
-            await _uiFactory.CreateJoyStick();
             await _uiFactory.CreateuiRoot();
         }
 

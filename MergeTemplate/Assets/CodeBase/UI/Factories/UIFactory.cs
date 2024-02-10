@@ -39,17 +39,6 @@ namespace CodeBase.UI.Factories
             uiRoot = element;
         }
 
-        public async UniTask<GameObject> CreateJoyStick()
-        {
-            GameObject joyPrefab =
-                await _assetProvider.Load<GameObject>(AssetPath.JoystickCanvas);
-            GameObject joy =
-                _sceneContextProvider.GetCurrentSceneContextInstantiator().InstantiatePrefab(joyPrefab);
-            joy.GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("JoystickCamera").GetComponent<Camera>();
-
-            return joy;
-        }
-        
 
         public void Cleanup()
         {

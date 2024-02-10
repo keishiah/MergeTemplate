@@ -7,7 +7,6 @@ namespace CodeBase.UI.Factories
     {
         void Cleanup();
         UniTask WarmUp();
-        UniTask<GameObject> CreateJoyStick();
         UniTask CreateuiRoot();
     }
 }
