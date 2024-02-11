@@ -21,10 +21,12 @@ MonoBehaviour:
     m_Address: UiRoot
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 58a89cb3bb0e10445986cd3f4ead31f6
-    m_Address: JoystickCanvas
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa7fef4aec5a01a4bbb3b3cbff1fdb5a
+    m_Address: CreateBuildingPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: f0315dacec35d284a991bec7e712148f, type: 2}
   m_SchemaSet:

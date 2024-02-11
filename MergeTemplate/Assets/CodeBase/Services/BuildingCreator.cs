@@ -19,11 +19,20 @@ namespace CodeBase.Services
             _activityToken = new CancellationTokenSource();
         }
 
-        public async UniTaskVoid CreateProductInTimeAsync(BuildingPlace buildingPlace)
+        public async UniTaskVoid CreateProductInTimeAsync(BuildingPlace buildingPlace, string buildingName)
         {
-            var delayTimeSpan = TimeSpan.FromSeconds(2f);
+            var timeToCreate = _staticDataService.GetBuildingData(buildingName).timeToCreate;
+            buildingPlace.UpdateTimerText(timeToCreate);
 
-            await UniTask.Delay(delayTimeSpan, cancellationToken: _activityToken.Token);
+            while (timeToCreate > 0)
+            {
+                var delayTimeSpan = TimeSpan.FromSeconds(1f);
+
+                await UniTask.Delay(delayTimeSpan, cancellationToken: _activityToken.Token);
+                timeToCreate--;
+                buildingPlace.UpdateTimerText(timeToCreate);
+            }
+
             CreateBuilding(buildingPlace);
         }
 

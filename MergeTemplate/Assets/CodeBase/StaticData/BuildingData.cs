@@ -17,5 +17,6 @@ namespace CodeBase.StaticData
     {
         public string buildingName;
         public Sprite buildingSprite;
+        public int timeToCreate;
     }
 }

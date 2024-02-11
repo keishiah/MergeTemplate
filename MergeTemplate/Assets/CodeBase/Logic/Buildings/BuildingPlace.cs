@@ -1,6 +1,7 @@
 ﻿using CodeBase.Services;
 using CodeBase.Services.StaticDataService;
 using CodeBase.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -18,7 +19,7 @@ namespace CodeBase.Logic.Buildings
     public class BuildingPlace : MonoBehaviour
     {
         public Image buildingStateImage;
-        // public string buildingName;
+        public TextMeshProUGUI timerText;
 
         private string _buildingToCreateName;
 
@@ -40,6 +41,7 @@ namespace CodeBase.Logic.Buildings
             {
                 case BuildingStateEnum.Inactive:
                     buildingStateImage.raycastTarget = false;
+                    timerText.gameObject.SetActive(false);
                     buildingStateImage.gameObject.SetActive(false);
                     break;
                 case BuildingStateEnum.PlaceToBuild:
@@ -49,20 +51,32 @@ namespace CodeBase.Logic.Buildings
                     break;
                 case BuildingStateEnum.BuildInProgress:
                     buildingStateImage.raycastTarget = false;
+                    timerText.gameObject.SetActive(true);
                     ShowBuildSprite(_staticDataService.BuildInProgressSprite);
                     break;
                 case BuildingStateEnum.BuildingFinished:
                     buildingStateImage.raycastTarget = false;
-                    ShowBuildSprite(_staticDataService.GetBuildingInfo(_buildingToCreateName).buildingSprite);
+                    timerText.gameObject.SetActive(false);
+                    ShowBuildSprite(_staticDataService.GetBuildingData(_buildingToCreateName).buildingSprite);
                     break;
             }
+        }
+
+        public void UpdateTimerText(int totalSeconds)
+        {
+            int hours = totalSeconds / 3600;
+            int minutes = (totalSeconds % 3600) / 60;
+            int seconds = totalSeconds % 60;
+
+            string formattedTime = $"{hours:00}:{minutes:00}:{seconds:00}";
+            timerText.text = formattedTime;
         }
 
         public void StartCreatingBuilding(string buildingToCreateName)
         {
             _buildingToCreateName = buildingToCreateName;
             SetBuildingState(BuildingStateEnum.BuildInProgress);
-            _buildingCreator.CreateProductInTimeAsync(this).Forget();
+            _buildingCreator.CreateProductInTimeAsync(this, buildingToCreateName).Forget();
         }
 
         private void SubscribeToOpenCreateBuildingPopup()

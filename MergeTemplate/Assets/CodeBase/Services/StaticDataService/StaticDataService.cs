@@ -44,7 +44,7 @@ namespace CodeBase.Services.StaticDataService
             _buildInProgressSprite = buildingData.buildInProgressSprite;
         }
 
-        public BuildingInfo GetBuildingInfo(string buildingName) =>
+        public BuildingInfo GetBuildingData(string buildingName) =>
             _buildingData.TryGetValue(buildingName, out BuildingInfo resourceData)
                 ? resourceData
                 : throw new Exception($"_buildingData dictionary doesn't have {buildingName}");

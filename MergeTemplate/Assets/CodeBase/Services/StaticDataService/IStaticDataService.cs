@@ -8,6 +8,6 @@ namespace CodeBase.Services.StaticDataService
         void Initialize();
         Sprite PlaceToBuildSprite { get; }
         Sprite BuildInProgressSprite { get; }
-        BuildingInfo GetBuildingInfo(string buildingName);
+        BuildingInfo GetBuildingData(string buildingName);
     }
 }
