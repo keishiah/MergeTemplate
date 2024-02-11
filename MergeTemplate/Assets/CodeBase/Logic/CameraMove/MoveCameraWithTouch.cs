@@ -4,7 +4,7 @@ namespace CodeBase.Logic.CameraMove
 {
     public class MoveCameraWithTouch : MonoBehaviour
     {
-        public float dragSpeed = 2;
+        public float dragSpeed = 2f;
         private Vector3 dragOrigin;
         private Vector3 lastMousePosition;
 
@@ -23,7 +23,7 @@ namespace CodeBase.Logic.CameraMove
                 Vector3 difference = currentMousePosition - lastMousePosition;
                 lastMousePosition = currentMousePosition;
 
-                Vector3 move = new Vector3(-difference.x, 0, -difference.y) * dragSpeed * Time.deltaTime;
+                Vector3 move = new Vector3(-difference.x, -difference.y, 0) * dragSpeed * Time.deltaTime;
 
                 transform.Translate(move, Space.World);
             }

@@ -2,16 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Infrastructure.AssetManagment;
-using CodeBase.Logic.Buildings;
 using CodeBase.StaticData;
+using UnityEngine;
 
 namespace CodeBase.Services.StaticDataService
 {
     public class StaticDataService : IStaticDataService
     {
-        private const string BuildingsDataPath = "BuildingsStaticData";
+        private const string BuildingsDataPath = "BuildingData";
 
-        private Dictionary<BuildingType, BuildingStaticData> _buildingStaticData;
+        private Dictionary<string, BuildingInfo> _buildingData;
+
+        private Sprite _placeToBuildSprite;
+
+        public Sprite PlaceToBuildSprite =>
+            _placeToBuildSprite
+                ? _placeToBuildSprite
+                : throw new Exception($"PlaceToBuildSprite not initialized in StaticDataService");
+
+
+        private Sprite _buildInProgressSprite;
+
+        public Sprite BuildInProgressSprite =>
+            _buildInProgressSprite
+                ? _buildInProgressSprite
+                : throw new Exception($"BuildInProgressSprite not initialized in StaticDataService");
 
         private readonly IAssetProvider _assetProvider;
 
@@ -22,14 +37,16 @@ namespace CodeBase.Services.StaticDataService
 
         public async void Initialize()
         {
-            var buildingStaticDataTemp =
-                await _assetProvider.LoadStaticDataByLabel<BuildingStaticData>(BuildingsDataPath);
-            _buildingStaticData = buildingStaticDataTemp.ToDictionary(x => x.buildingType, x => x);
+            BuildingData buildingData = await _assetProvider.Load<BuildingData>(BuildingsDataPath);
+            _buildingData = buildingData.buildings.ToDictionary(x => x.buildingName, x => x);
+
+            _placeToBuildSprite = buildingData.placeToBuildSprite;
+            _buildInProgressSprite = buildingData.buildInProgressSprite;
         }
-        
-        public BuildingStaticData GetBuildingData(BuildingType buildingType) =>
-            _buildingStaticData.TryGetValue(buildingType, out BuildingStaticData buildingData)
-                ? buildingData
-                : throw new Exception($"_buildingStaticData dictionary doesnt have {buildingType}");
+
+        public BuildingInfo GetBuildingInfo(string buildingName) =>
+            _buildingData.TryGetValue(buildingName, out BuildingInfo resourceData)
+                ? resourceData
+                : throw new Exception($"_buildingData dictionary doesn't have {buildingName}");
     }
 }
