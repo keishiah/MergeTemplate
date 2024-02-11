@@ -8,5 +8,6 @@ namespace CodeBase.UI.Factories
         void Cleanup();
         UniTask WarmUp();
         UniTask CreateuiRoot();
+        UniTask CreateBuildingPopup();
     }
 }

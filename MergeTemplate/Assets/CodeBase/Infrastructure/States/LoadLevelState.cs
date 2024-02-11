@@ -53,7 +53,7 @@ namespace CodeBase.Infrastructure.States
         {
             _sceneContextProvider.SetCurrentSceneContext(_sceneName);
             _sceneContextProvider.Resolve<SceneObjectsProvider>().InitializeSceneObjects();
-            
+
             await InitLevel();
             await _gameFactory.WarmUp();
             await _uiFactory.WarmUp();
@@ -68,11 +68,11 @@ namespace CodeBase.Infrastructure.States
         private async UniTask CreateUi()
         {
             await _uiFactory.CreateuiRoot();
+            await _uiFactory.CreateBuildingPopup();
         }
 
         private async UniTask CreatePools()
         {
         }
-
     }
 }
