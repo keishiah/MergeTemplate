@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9197638910215043984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9197638910215043987}
+  - component: {fileID: 9197638910215043989}
+  - component: {fileID: 7593687831635981934}
+  m_Layer: 5
+  m_Name: SlotsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9197638910215043987
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9197638910215043984}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9197638910215043989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9197638910215043984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd057f6116f28847b2db4b9ad8c87bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showBoard: 0
+  columns: 3
+  rows: 3
+  allDropSlots:
+  - id: 0
+    showBoard: 0
+    mergeItem: {fileID: 11400000, guid: 4bb367666d999984a8873553522e990f, type: 2}
+    slotState: 0
+  - id: 1
+    showBoard: 0
+    mergeItem: {fileID: 11400000, guid: 72bb531f53e78344c92eb24c04d8f44a, type: 2}
+    slotState: 1
+  - id: 2
+    showBoard: 0
+    mergeItem: {fileID: 11400000, guid: 927c1933fe530aa468c6442d26edc1a0, type: 2}
+    slotState: 2
+  - id: 3
+    showBoard: 0
+    mergeItem: {fileID: 11400000, guid: 1cf2933c7fa0b254db37d45e3fcc9db0, type: 2}
+    slotState: 0
+  - id: 3
+    showBoard: 0
+    mergeItem: {fileID: 11400000, guid: 1cf2933c7fa0b254db37d45e3fcc9db0, type: 2}
+    slotState: 0
+  - id: 3
+    showBoard: 0
+    mergeItem: {fileID: 11400000, guid: 1cf2933c7fa0b254db37d45e3fcc9db0, type: 2}
+    slotState: 0
+  - id: 0
+    showBoard: 0
+    mergeItem: {fileID: 0}
+    slotState: 2
+  - id: 0
+    showBoard: 0
+    mergeItem: {fileID: 0}
+    slotState: 2
+  - id: 0
+    showBoard: 0
+    mergeItem: {fileID: 0}
+    slotState: 2
+--- !u!114 &7593687831635981934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9197638910215043984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 9197638910215043989}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
