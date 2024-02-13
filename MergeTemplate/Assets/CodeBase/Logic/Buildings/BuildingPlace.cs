@@ -1,6 +1,10 @@
-﻿using CodeBase.Services;
+﻿using System;
+using System.Threading;
+using CodeBase.Data;
+using CodeBase.Services;
 using CodeBase.Services.StaticDataService;
 using CodeBase.UI;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +22,7 @@ namespace CodeBase.Logic.Buildings
 
     public class BuildingPlace : MonoBehaviour
     {
-        public Image buildingStateImage;
-        public TextMeshProUGUI timerText;
+        public BuildingView buildingView;
 
         private string _buildingToCreateName;
 
@@ -27,12 +30,16 @@ namespace CodeBase.Logic.Buildings
         private UiPresenter _uiPresenter;
         private BuildingCreator _buildingCreator;
 
+        private CancellationTokenSource _activityToken;
+
+
         [Inject]
         void Construct(IStaticDataService staticDataService, UiPresenter uiPresenter, BuildingCreator buildingCreator)
         {
             _staticDataService = staticDataService;
             _uiPresenter = uiPresenter;
             _buildingCreator = buildingCreator;
+            _activityToken = new CancellationTokenSource();
         }
 
         public void SetBuildingState(BuildingStateEnum state)
@@ -40,55 +47,48 @@ namespace CodeBase.Logic.Buildings
             switch (state)
             {
                 case BuildingStateEnum.Inactive:
-                    buildingStateImage.raycastTarget = false;
-                    timerText.gameObject.SetActive(false);
-                    buildingStateImage.gameObject.SetActive(false);
+                    buildingView.SetViewInactive();
                     break;
                 case BuildingStateEnum.PlaceToBuild:
-                    buildingStateImage.raycastTarget = true;
+                    buildingView.SetViewPlaceToBuild();
+                    buildingView.ShowBuildSprite(_staticDataService.PlaceToBuildSprite);
                     SubscribeToOpenCreateBuildingPopup();
-                    ShowBuildSprite(_staticDataService.PlaceToBuildSprite);
                     break;
                 case BuildingStateEnum.BuildInProgress:
-                    buildingStateImage.raycastTarget = false;
-                    timerText.gameObject.SetActive(true);
-                    ShowBuildSprite(_staticDataService.BuildInProgressSprite);
+                    buildingView.SetViewBuildInProgress();
+                    buildingView.ShowBuildSprite(_staticDataService.BuildInProgressSprite);
                     break;
                 case BuildingStateEnum.BuildingFinished:
-                    buildingStateImage.raycastTarget = false;
-                    timerText.gameObject.SetActive(false);
-                    ShowBuildSprite(_staticDataService.GetBuildingData(_buildingToCreateName).buildingSprite);
+                    buildingView.SetViewBuildCreated();
+                    buildingView.ShowBuildSprite(_staticDataService.GetBuildingData(_buildingToCreateName)
+                        .buildingSprite);
                     break;
             }
-        }
-
-        public void UpdateTimerText(int totalSeconds)
-        {
-            int hours = totalSeconds / 3600;
-            int minutes = (totalSeconds % 3600) / 60;
-            int seconds = totalSeconds % 60;
-
-            string formattedTime = $"{hours:00}:{minutes:00}:{seconds:00}";
-            timerText.text = formattedTime;
         }
 
         public void StartCreatingBuilding(string buildingToCreateName)
         {
             _buildingToCreateName = buildingToCreateName;
             SetBuildingState(BuildingStateEnum.BuildInProgress);
-            _buildingCreator.CreateProductInTimeAsync(this, buildingToCreateName).Forget();
+            _buildingCreator.CreateProductInTimeAsync(this, buildingToCreateName, _activityToken).Forget();
         }
 
         private void SubscribeToOpenCreateBuildingPopup()
         {
-            buildingStateImage.GetComponent<Button>().onClick
+            buildingView.buildingStateImage.GetComponent<Button>().onClick
                 .AddListener(() => _uiPresenter.OpenCreateBuildingPopup(this));
         }
 
-        private void ShowBuildSprite(Sprite spriteToShow)
+        public void UpdateTimerText(int totalSeconds)
         {
-            buildingStateImage.gameObject.SetActive(true);
-            buildingStateImage.sprite = spriteToShow;
+            buildingView.UpdateTimerText(StaticMethods.FormatTimerText(totalSeconds));
+        }
+
+        public void OnDestroy()
+        {
+            _activityToken?.Cancel();
+            _activityToken?.Dispose();
+            _activityToken = null;
         }
     }
 }

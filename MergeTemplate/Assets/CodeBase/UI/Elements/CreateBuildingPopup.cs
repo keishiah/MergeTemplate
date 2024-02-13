@@ -1,5 +1,4 @@
 ﻿using CodeBase.Logic.Buildings;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace CodeBase.UI.Elements
@@ -21,6 +20,11 @@ namespace CodeBase.UI.Elements
                 buildingPlace.StartCreatingBuilding("Name");
                 gameObject.SetActive(false);
             });
+        }
+
+        private void OnDisable()
+        {
+            buildButton.onClick.RemoveAllListeners();
         }
     }
 }
