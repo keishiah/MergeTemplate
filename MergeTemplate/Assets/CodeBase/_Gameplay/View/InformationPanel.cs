@@ -35,6 +35,9 @@ public class InformationPanel : MonoBehaviour
         slotCurrent = slot;
 
         MergeItem mergeItem = slot.CurrentItem;
+        if (mergeItem == null)
+            return;
+
         ActivateInfromPanel(true);
 
         itemNameText.text = mergeItem.itemName;

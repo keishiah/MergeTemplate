@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(InitialItemDrop))]
+[CustomEditor(typeof(MergeLevel))]
 public class InitialItemDropEditor : Editor
 {
 
@@ -10,14 +10,13 @@ public class InitialItemDropEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        InitialItemDrop InitialItemDrop = (InitialItemDrop)target;
+        MergeLevel InitialItemDrop = (MergeLevel)target;
         EditorGUILayout.Space();
 
         showLevels = EditorGUILayout.Foldout(showLevels, "Slots (" + InitialItemDrop.allDropSlots.Count + ")");
         if (showLevels)
         {
             EditorGUI.indentLevel++;
-
 
             EditorGUI.indentLevel = 0;
 
@@ -67,9 +66,6 @@ public class InitialItemDropEditor : Editor
                 EditorGUILayout.BeginVertical((x == -1) ? headerColumnStyle : columnStyle);
                 for (int y = -1; y < InitialItemDrop.rows; y++)
                 {
-
-                    //if (InitialItemDrop.allLevels[i].showBoard)
-                    //{
                     if (x == -1 && y == -1)
                     {
                         EditorGUILayout.BeginVertical(rowHeaderStyle);
@@ -107,10 +103,19 @@ public class InitialItemDropEditor : Editor
                             InitialItemDrop.allDropSlots.Add(new ItemDropSlot());
                         }
 
-                        InitialItemDrop.allDropSlots[i].mergeItem = (MergeItem)EditorGUILayout.ObjectField(InitialItemDrop.allDropSlots[i].mergeItem, typeof(MergeItem), true, GUILayout.Width(90));
+                        InitialItemDrop.allDropSlots[i].mergeItem = 
+                            (MergeItem)EditorGUILayout.ObjectField(
+                                InitialItemDrop.allDropSlots[i].mergeItem, 
+                                typeof(MergeItem), 
+                                allowSceneObjects: true, 
+                                GUILayout.Width(90));
+
                         EditorGUILayout.EndHorizontal();
-                        InitialItemDrop.allDropSlots[i].slotState = (SlotState)EditorGUILayout.EnumPopup( InitialItemDrop.allDropSlots[i].slotState, enumStyle);
-                       
+
+                        InitialItemDrop.allDropSlots[i].slotState = 
+                            (SlotState)EditorGUILayout.EnumPopup(
+                                InitialItemDrop.allDropSlots[i].slotState, 
+                                enumStyle);
                     }
 
                 }

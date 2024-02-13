@@ -7,29 +7,30 @@ using Zenject;
 [RequireComponent(typeof(GridLayoutGroup))]
 public class MergeGrid : MonoBehaviour
 {
+    private const string EMPTY_ITEM_NAME = "Empty";
+
     [SerializeField]
     public InformationPanel informationPanel;
 
-    private List<Slot> instantiatedSlots = new List<Slot>();
-
     [SerializeField] 
     private Slot slotPrefab;
-
-    [Inject]
-    DiContainer _container;
     [Inject]
     public SlotsManager slotsManager;
 
     [Inject]
-    private InitialItemDrop initialItemDrop;
+    private DiContainer _container;
+    [Inject]
+    private MergeLevel level;
     [Inject]
     private MergeItemsManager mergeItemsGeneralOpened;
 
-    public List<Slot> InstantiatedSlots { get => instantiatedSlots; }
-
     private void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        if (level.isNeedResetLevel)
+        {
+            PlayerPrefs.DeleteAll();
+            level.isNeedResetLevel = false;
+        }
 
         mergeItemsGeneralOpened.LoadItemGeneralOpened();
         Input.multiTouchEnabled = false;
@@ -38,18 +39,19 @@ public class MergeGrid : MonoBehaviour
 
     private void CreateLayout()
     {
-        instantiatedSlots = new List<Slot>();
-
-        int slotsColumns = initialItemDrop.columns;
-        int slotsRows = initialItemDrop.rows;
+        int slotsColumns = level.columns;
+        int slotsRows = level.rows;
 
         int allSlots = slotsColumns * slotsRows;
         GridLayoutGroup gridLayoutGroup = GetComponent<GridLayoutGroup>();
 
         gridLayoutGroup.constraintCount = slotsColumns;
 
-        for (int x = 0; x < allSlots; x++)
+        for (int i = 0; i < allSlots; i++)
         {
+            int slot_x = i % slotsColumns;
+            int slot_y = i / slotsColumns;
+
             Slot initSlot = _container.InstantiatePrefabForComponent<Slot>(slotPrefab);
 
             initSlot.addItemEvent += SaveInventory;
@@ -57,8 +59,8 @@ public class MergeGrid : MonoBehaviour
 
             RectTransform slotRect = initSlot.GetComponent<RectTransform>();
 
-            initSlot.SlotID = x;
-            initSlot.name = $"Slot: {x}";
+            initSlot.SlotID = i;
+            initSlot.name = $"Slot: {slot_y}_{slot_x} ID: {i}";
             initSlot.transform.SetParent(transform);
 
             slotRect.localPosition = Vector3.zero;
@@ -66,20 +68,24 @@ public class MergeGrid : MonoBehaviour
 
             slotRect.localScale = Vector3.one;
 
-            instantiatedSlots.Add(initSlot);
+            slotsManager.Slots.Add(initSlot);
         }
+
+        slotsManager.InitNeighbours(slotsColumns);
     }
 
     public void SaveInventory()
     {
         string content = string.Empty;
 
-        for (int i = 0; i < instantiatedSlots.Count; i++)
+        for (int i = 0; i < slotsManager.Slots.Count; i++)
         {
-            Slot slot = instantiatedSlots[i];
+            Slot slot = slotsManager.Slots[i];
             if (!slot.IsEmpty)
             {
-                content += i + "-" + slot.CurrentItem.name.ToString() + "-" + (int)slot.SlotState + ";";
+                string itemName = slot.CurrentItem == null ? EMPTY_ITEM_NAME : slot.CurrentItem.name;
+
+                content += i + "-" + itemName + "-" + (int)slot.SlotState + ";";
             }
 
         }
@@ -87,46 +93,11 @@ public class MergeGrid : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void CheckNeighbour(Slot m_Slot)
-    {
-        int slotID = m_Slot.SlotID;
-        if (slotID % 7 != 6)
-        {
-            if (instantiatedSlots[slotID + 1].SlotState == SlotState.Blocked)
-            {
-                instantiatedSlots[slotID + 1].ChangeState(SlotState.NonTouchable);
-            }
-        }
-
-        if (slotID % 7 != 0)
-        {
-            if (instantiatedSlots[slotID - 1].SlotState == SlotState.Blocked)
-            {
-                instantiatedSlots[slotID - 1].ChangeState(SlotState.NonTouchable);
-            }
-        }
-
-        if (slotID - 7 >= 0)
-        {
-            if (instantiatedSlots[slotID - 7].SlotState == SlotState.Blocked)
-            {
-                instantiatedSlots[slotID - 7].ChangeState(SlotState.NonTouchable);
-            }
-        }
-
-        //if (slotID + 7 < slotsColumns)
-        //{
-        //    if (instantiatedSlots[slotID + 7].SlotState == SlotState.Blocked)
-        //    {
-        //        instantiatedSlots[slotID + 7].ChangeState(SlotState.NonTouchable);
-        //    }
-        //}
-    }
-
     public void LoadInventory()
     {
         CreateLayout();
-        slotsManager.InitSlots(InstantiatedSlots);
+
+        bool isLoadSuccess = false;
 
         if (PlayerPrefs.HasKey("mergeContent"))
         {
@@ -140,24 +111,26 @@ public class MergeGrid : MonoBehaviour
                     string[] splitedValue = splitedContent[i].Split('-');
                     int index = int.Parse(splitedValue[0]);
                     int slotState = int.Parse(splitedValue[2]);
-                    instantiatedSlots[index].ChangeState((SlotState)slotState);
-                    instantiatedSlots[index].AddItem(Resources.Load<MergeItem>($"Items/{splitedValue[1]}"));
+                    slotsManager.Slots[index].ChangeState((SlotState)slotState);
+                    if(splitedValue[1] != EMPTY_ITEM_NAME)
+                        slotsManager.Slots[index].AddItem(
+                            Resources.Load<MergeItem>($"Items/{splitedValue[1]}"));
                 }
+
+                isLoadSuccess = true;
             }
             catch (Exception ex)
             {
                 Debug.Log("Something went wrong");
                 Debug.LogException(ex);
-
-                initialItemDrop.InitialItemInstance();
             }
         }
-        else
-        {
-            initialItemDrop.InitialItemInstance();
-        }
-    }
 
+        if (isLoadSuccess)
+            slotsManager.InitialItems();
+        else
+            slotsManager.InitialItems(level.allDropSlots);
+    }
 }
 
 

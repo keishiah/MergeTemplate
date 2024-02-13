@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d35107601fe1d498dddcde5229899b, type: 3}
   m_Name: Building Mateials_4
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: "\u041A\u0438\u0440\u043F\u0438\u0447"
   itemDescrpition: 
-  itemLevel: 1
+  itemLevel: 4
   itemCost: 0
   itemType: 0
   itemSprite: {fileID: 21300000, guid: 61475326340a6be4a82c9e5698588256, type: 3}
-  nextItem: {fileID: 0}
+  nextItem: {fileID: 11400000, guid: 1cf2933c7fa0b254db37d45e3fcc9db0, type: 2}

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d35107601fe1d498dddcde5229899b, type: 3}
   m_Name: Building Mateials_7
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: "\u0421\u0442\u0430\u043B\u044C\u043D\u0430\u044F \u0431\u0430\u043B\u043A\u0430"
   itemDescrpition: 
-  itemLevel: 1
+  itemLevel: 7
   itemCost: 0
   itemType: 0
   itemSprite: {fileID: 21300000, guid: d56daabcccb8c0c498bfc1d180edc3e7, type: 3}
