@@ -1,6 +1,5 @@
 ﻿using CodeBase.CompositionRoot;
 using CodeBase.Infrastructure.Factories;
-using CodeBase.Logic.Camera;
 using CodeBase.Services.PlayerProgressService;
 using CodeBase.Services.SceneContextProvider;
 using CodeBase.UI.Factories;
@@ -54,7 +53,7 @@ namespace CodeBase.Infrastructure.States
         {
             _sceneContextProvider.SetCurrentSceneContext(_sceneName);
             _sceneContextProvider.Resolve<SceneObjectsProvider>().InitializeSceneObjects();
-            
+
             await InitLevel();
             await _gameFactory.WarmUp();
             await _uiFactory.WarmUp();
@@ -68,13 +67,12 @@ namespace CodeBase.Infrastructure.States
 
         private async UniTask CreateUi()
         {
-            await _uiFactory.CreateJoyStick();
             await _uiFactory.CreateuiRoot();
+            await _uiFactory.CreateBuildingPopup();
         }
 
         private async UniTask CreatePools()
         {
         }
-
     }
 }

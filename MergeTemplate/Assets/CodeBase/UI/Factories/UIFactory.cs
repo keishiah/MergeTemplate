@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Services.SceneContextProvider;
+using CodeBase.UI.Elements;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace CodeBase.UI.Factories
         private readonly IAssetProvider _assetProvider;
         private readonly UiPresenter _uiPresenter;
         private readonly SceneContextProvider _sceneContextProvider;
-        
+
         private GameObject uiRoot;
 
         public UIFactory(IAssetProvider assetProvider, UiPresenter uiPresenter,
@@ -39,17 +40,14 @@ namespace CodeBase.UI.Factories
             uiRoot = element;
         }
 
-        public async UniTask<GameObject> CreateJoyStick()
+        public async UniTask CreateBuildingPopup()
         {
-            GameObject joyPrefab =
-                await _assetProvider.Load<GameObject>(AssetPath.JoystickCanvas);
-            GameObject joy =
-                _sceneContextProvider.GetCurrentSceneContextInstantiator().InstantiatePrefab(joyPrefab);
-            joy.GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("JoystickCamera").GetComponent<Camera>();
-
-            return joy;
+            var prefab = await _assetProvider.Load<GameObject>(AssetPath.CreateBuildingPopup);
+            var element = _sceneContextProvider.GetCurrentSceneContextInstantiator()
+                .InstantiatePrefab(prefab, uiRoot.transform);
+            _uiPresenter.SubscribeUIElementToPresenter(element.GetComponent<CreateBuildingPopup>());
         }
-        
+
 
         public void Cleanup()
         {

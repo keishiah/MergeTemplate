@@ -43,7 +43,8 @@ namespace CodeBase.CompositionRoot
             BindAssetProvider();
 
             BindUiPresenter();
-            
+
+            Container.Bind<BuildingCreator>().AsSingle();
         }
 
 
