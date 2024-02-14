@@ -39,7 +39,7 @@ namespace CodeBase.UI
             _uiElements.Add(element);
         }
 
-        public T GetUiElementFromElementsList<T>() where T : UiViewBase
+        private T GetUiElementFromElementsList<T>() where T : UiViewBase
         {
             return (T)_uiElements.FirstOrDefault(element => element.GetType() == typeof(T));
         }

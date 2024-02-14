@@ -22,7 +22,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa7fef4aec5a01a4bbb3b3cbff1fdb5a
+  - m_GUID: a829ef54e87e0da4195519a800e0eca5
     m_Address: CreateBuildingPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
