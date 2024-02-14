@@ -31,7 +31,10 @@ namespace CodeBase.Logic.Buildings
             timerText.gameObject.SetActive(false);
         }
 
-        public void UpdateTimerText(string formattedTime) => timerText.text = formattedTime;
+        public void UpdateTimerText(string formattedTime)
+        {
+            timerText.text = formattedTime;
+        }
 
         public void ShowBuildSprite(Sprite spriteToShow)
         {
