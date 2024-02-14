@@ -9,5 +9,6 @@ namespace CodeBase.UI.Factories
         UniTask WarmUp();
         UniTask CreateuiRoot();
         UniTask CreateBuildingPopup();
+        UniTask CreateCoinsUi();
     }
 }
