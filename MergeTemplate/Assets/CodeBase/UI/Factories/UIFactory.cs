@@ -48,6 +48,14 @@ namespace CodeBase.UI.Factories
             _uiPresenter.SubscribeUIElementToPresenter(element.GetComponent<CreateBuildingPopup>());
         }
 
+        public async UniTask CreateCoinsUi()
+        {
+            var prefab = await _assetProvider.Load<GameObject>(AssetPath.CoinsUi);
+            var element = _sceneContextProvider.GetCurrentSceneContextInstantiator()
+                .InstantiatePrefab(prefab);
+            _uiPresenter.SubscribeUIElementToPresenter(element.GetComponent<CoinsCounterUi>());
+        }
+
 
         public void Cleanup()
         {

@@ -69,6 +69,7 @@ namespace CodeBase.Infrastructure.States
         {
             await _uiFactory.CreateuiRoot();
             await _uiFactory.CreateBuildingPopup();
+            await _uiFactory.CreateCoinsUi();
         }
 
         private async UniTask CreatePools()

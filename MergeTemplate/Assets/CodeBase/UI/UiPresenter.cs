@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Logic.Buildings;
 using CodeBase.Services.PlayerProgressService;
@@ -10,6 +11,7 @@ namespace CodeBase.UI
     public class UiPresenter
     {
         private IPlayerProgressService _playerProgressService;
+        public IPlayerProgressService PlayerProgressService => _playerProgressService;
 
         private List<UiViewBase> _uiElements = new();
 
@@ -28,6 +30,11 @@ namespace CodeBase.UI
 
         public void CloseCreateBuildingPopup() =>
             GetUiElementFromElementsList<CreateBuildingPopup>().gameObject.SetActive(false);
+
+        public void SubscribeMoneyCountChanged(Action<int> actionOnMoneyCountChanged)
+        {
+            PlayerProgressService.Progress.Coins.SubscribeToCoinsCountChanges(actionOnMoneyCountChanged);
+        }
 
         public void SubscribeUIElementToPresenter(UiViewBase uiElement)
         {
