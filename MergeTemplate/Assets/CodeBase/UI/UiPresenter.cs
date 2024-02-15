@@ -31,9 +31,9 @@ namespace CodeBase.UI
         public void CloseCreateBuildingPopup() =>
             GetUiElementFromElementsList<CreateBuildingPopup>().gameObject.SetActive(false);
 
-        public void SubscribeMoneyCountChanged(Action<int> actionOnMoneyCountChanged)
+        public void SubscribeMoneyCountChanged(Action<int> actionOnCoinsCountChanged)
         {
-            PlayerProgressService.Progress.Coins.SubscribeToCoinsCountChanges(actionOnMoneyCountChanged);
+            PlayerProgressService.Progress.Coins.SubscribeToCoinsCountChanges(actionOnCoinsCountChanged);
         }
 
         public void SubscribeUIElementToPresenter(UiViewBase uiElement)

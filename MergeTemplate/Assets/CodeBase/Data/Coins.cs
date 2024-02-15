@@ -28,9 +28,9 @@ namespace CodeBase.Data
 
         public void AddCoins(int count) => _coinsCount.Value += count;
 
-        public IDisposable SubscribeToCoinsCountChanges(Action<int> onMoneyCountChanged)
+        public IDisposable SubscribeToCoinsCountChanges(Action<int> onCoinsCountChanged)
         {
-            return _coinsCount.Subscribe(onMoneyCountChanged);
+            return _coinsCount.Subscribe(onCoinsCountChanged);
         }
 
         public void OnAfterDeserialize()
