@@ -9,7 +9,7 @@ namespace CodeBase.Data
     {
         public int CurrentCoinsCount => _coinsCount.Value;
 
-        private ReactiveProperty<int> _coinsCount = new();
+        public ReactiveProperty<int> _coinsCount = new();
         private int _defaultValue = 0;
         [SerializeField] private int savedValue;
 
@@ -20,7 +20,7 @@ namespace CodeBase.Data
 
         public bool SpendCoins(int count)
         {
-            if (_coinsCount.Value <= count)
+            if (_coinsCount.Value < count)
                 return false;
             _coinsCount.Value -= count;
             return true;

@@ -24,7 +24,14 @@ namespace CodeBase.UI
         public void OpenCreateBuildingPopup(BuildingPlace buildingPlace)
         {
             CreateBuildingPopup popup = GetUiElementFromElementsList<CreateBuildingPopup>();
-            popup.SubscribeToCreateBuilding(buildingPlace);
+            popup.SubscribeToCreateBuilding();
+            popup.gameObject.SetActive(true);
+        }
+
+        public void OpenCreateBuildingPopup()
+        {
+            CreateBuildingPopup popup = GetUiElementFromElementsList<CreateBuildingPopup>();
+            popup.SubscribeToCreateBuilding();
             popup.gameObject.SetActive(true);
         }
 

@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using CodeBase.Services.PlayerProgressService;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
-using static UnityEditor.Progress;
 
 // Slot Script
 
@@ -48,6 +45,8 @@ public class Slot : MonoBehaviour, IDropHandler
     {
         get { return item; }
     }
+
+    [Inject] private IPlayerProgressService PlayerProgressService;
 
     public void AddItem(MergeItem newItem)
     {
@@ -163,7 +162,7 @@ public class Slot : MonoBehaviour, IDropHandler
 
         if (slotFrom.CurrentItem != slotTo.CurrentItem)
             return;
-
+        PlayerProgressService.Progress.Coins.AddCoins(10);
         slotFrom.RemoveItem();
         slotTo.UpgradeItem();
     }
