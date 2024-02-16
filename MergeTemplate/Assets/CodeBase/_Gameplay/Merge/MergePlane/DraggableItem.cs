@@ -12,6 +12,7 @@ public class
     private Transform parentAfterDrag;
     public bool isClicked = false;
     private Camera _camera;
+    private Vector3 startMousePosition;
 
     private void Start()
     {
@@ -38,11 +39,11 @@ public class
                     transform.SetParent(transform.parent.parent.parent);
                     transform.SetAsLastSibling();
                     image.raycastTarget = false;
+                    startMousePosition = Input.mousePosition - transform.localPosition;
                 }
             }
         }
     }
-
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -52,14 +53,33 @@ public class
             {
                 if (eventData.clickCount < 2)
                 {
-                    Vector2 pos;
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.root as RectTransform,
-                        eventData.position, _camera, out pos);
-                    transform.position = transform.root.TransformPoint(pos);
+                    transform.localPosition
+                        = Input.mousePosition - startMousePosition;
+                    // Vector2 pos;
+                    // RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.root as RectTransform,
+                    //     eventData.position, _camera, out pos);
+                    // transform.position = transform.root.TransformPoint(pos);
                 }
             }
         }
     }
+
+    // public void OnDrag(PointerEventData eventData)
+    // {
+    //     if (slot.SlotState == SlotState.Draggable)
+    //     {
+    //         if (!slot.IsEmpty)
+    //         {
+    //             if (eventData.clickCount < 2)
+    //             {
+    //                 Vector2 pos;
+    //                 RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.root as RectTransform,
+    //                     eventData.position, _camera, out pos);
+    //                 transform.position = transform.root.TransformPoint(pos);
+    //             }
+    //         }
+    //     }
+    // }
 
     public void OnEndDrag(PointerEventData eventData)
     {
